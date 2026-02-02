@@ -1,4 +1,7 @@
 import React from 'react'
+
+import { Link } from 'react-router-dom';
+
 import Navbar from './Components/Navbar'
 import video from './assets/video-2.mp4'
 import image_1 from './assets/Schezwan-Paneer.jpg'
@@ -33,7 +36,7 @@ function Home() {
                         </div>
                         <div className="home-video-button">
                             <button className='home-btn-menu'><a href="#">Our Menu</a></button>
-                            <button className='home-btn-reservation'><a href="#">Reservation</a></button>
+                            <button className='home-btn-reservation'><Link to="/reservation">Reservation</Link></button>
 
                         </div>
                     </div>
@@ -272,7 +275,7 @@ function Home() {
                     <div className="home-sixth-container-img-header">
                         <h2>Make an Online Reservation</h2>
                         <div className="home-sixth-container-img-para"> 
-                            <a href="#" className="home-sixth-container-link">Reserve Table</a>
+                            <Link to="/reservation" className="home-sixth-container-link">Reserve Table</Link>
                         </div>
                     </div>
                 </div>

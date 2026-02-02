@@ -1,72 +1,81 @@
 import React, { useState } from 'react';
 import Navbar from './Components/Navbar';
-import './Style.css'; // Assuming you want to keep the same style
+// import './Reservation.css'; 
 
 const Reservation = () => {
-  const [formData, setFormData] = useState({
-    name: '',
-    phone: '',
-    guests: '',
-    date: '',
-    time: ''
-  });
+    const [formData, setFormData] = useState({
+        name: '',
+        phone: '',
+        guests: '',
+        date: '',
+        time: ''
+    });
 
-  const [message, setMessage] = useState('');
+    const [status, setStatus] = useState({ type: '', message: '' });
 
-  const handleChange = (e) => {
-    setFormData({ ...formData, [e.target.name]: e.target.value });
-  };
+    const handleChange = (e) => {
+        setFormData({ ...formData, [e.target.name]: e.target.value });
+    };
 
-  const handleSubmit = async (e) => {
-    e.preventDefault();
-    try {
-      const response = await fetch('http://localhost:5001/api/reservations', {
-        method: 'POST',
-        headers: {
-          'Content-Type': 'application/json',
-        },
-        body: JSON.stringify(formData),
-      });
+    const handleSubmit = async (e) => {
+        e.preventDefault();
+        setStatus({ type: 'loading', message: 'Processing your request...' });
 
-      const data = await response.json();
+        try {
+            const response = await fetch('http://localhost:5001/api/reservations', {
+                method: 'POST',
+                headers: { 'Content-Type': 'application/json' },
+                body: JSON.stringify(formData),
+            });
 
-      if (response.ok) {
-        setMessage('🎉 Reservation Successful! We will see you soon.');
-        setFormData({ name: '', phone: '', guests: '', date: '', time: '' });
-      } else {
-        setMessage(`❌ Error: ${data.message || 'Something went wrong'}`);
-      }
-    } catch (error) {
-      setMessage('❌ Error: Could not connect to server.');
-    }
-  };
+            const data = await response.json();
 
-  return (
-    <div>
-      <Navbar />
-      <div className="reservation-container" style={{ padding: '100px 20px', textAlign: 'center' }}>
-        <h2>Book A Table</h2>
-        <form onSubmit={handleSubmit} style={{ display: 'flex', flexDirection: 'column', maxWidth: '400px', margin: '0 auto', gap: '15px' }}>
-          
-          <input type="text" name="name" placeholder="Your Name" value={formData.name} onChange={handleChange} required style={{ padding: '10px' }} />
-          
-          <input type="tel" name="phone" placeholder="Phone Number" value={formData.phone} onChange={handleChange} required style={{ padding: '10px' }} />
-          
-          <input type="number" name="guests" placeholder="Number of Guests" value={formData.guests} onChange={handleChange} required style={{ padding: '10px' }} />
-          
-          <input type="date" name="date" value={formData.date} onChange={handleChange} required style={{ padding: '10px' }} />
-          
-          <input type="time" name="time" value={formData.time} onChange={handleChange} required style={{ padding: '10px' }} />
+            if (response.ok) {
+                setStatus({ type: 'success', message: '🎉 Table Booked Successfully!' });
+                setFormData({ name: '', phone: '', guests: '', date: '', time: '' });
+            } else {
+                setStatus({ type: 'error', message: data.message || 'Slot is full.' });
+            }
+        } catch (error) {
+            setStatus({ type: 'error', message: 'Server is offline. Try again later.' });
+        }
+    };
 
-          <button type="submit" style={{ padding: '12px', background: '#d4af37', color: 'white', border: 'none', cursor: 'pointer', fontSize: '16px' }}>
-            Confirm Reservation
-          </button>
-        </form>
+    return (
+        <div className="reservation-main-container">
+            <Navbar />
+            <div className="reservation-first-container">
+                <div className="reservation-card-container">
+                    <h2 className="reservation-title">Secure Your Table</h2>
+                    <p className="reservation-subtitle">Join us for an unforgettable culinary journey.</p>
+                    
+                    <form onSubmit={handleSubmit} className="reservation-form-container">
+                        <div className="reservation-input-group">
+                            <input type="text" name="name" placeholder="Full Name" value={formData.name} onChange={handleChange} required className="reservation-input-field" />
+                            <input type="tel" name="phone" placeholder="Phone Number" value={formData.phone} onChange={handleChange} required className="reservation-input-field" />
+                        </div>
+                        
+                        <div className="reservation-input-group">
+                            <input type="number" name="guests" placeholder="Guests" min="1" value={formData.guests} onChange={handleChange} required className="reservation-input-field" />
+                            <input type="date" name="date" value={formData.date} onChange={handleChange} required className="reservation-input-field" />
+                        </div>
 
-        {message && <p style={{ marginTop: '20px', fontSize: '18px', fontWeight: 'bold' }}>{message}</p>}
-      </div>
-    </div>
-  );
+                        <input type="time" name="time" value={formData.time} onChange={handleChange} required className="reservation-input-field" />
+
+                        <button type="submit" className="reservation-submit-btn">
+                            {status.type === 'loading' ? 'Booking...' : 'CONFIRM RESERVATION'}
+                        </button>
+                    </form>
+
+                    {status.message && (
+                        <div className={`reservation-status-msg ${status.type}`}>
+                            {status.message}
+                        </div>
+                    )}
+                </div>
+            </div>
+        </div>
+    );
 };
 
 export default Reservation;

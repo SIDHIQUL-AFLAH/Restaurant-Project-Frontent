@@ -42,9 +42,15 @@ const Admin = () => {
         }
     };
 
+    const handleLogout = () => {
+    localStorage.removeItem("isAdminAuthenticated");
+    window.location.href = "/admin-login";
+};
+
     return (
         <div className="admin-main-container">
             <Navbar />
+            <button onClick={handleLogout} className="admin-delete-btn">Logout</button>
             <div className="admin-first-container">
                 <div className="admin-content-box">
                     <h2 className="admin-title">Reservation Manager</h2>

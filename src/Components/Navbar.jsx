@@ -10,7 +10,7 @@ function Navbar() {
                     <li className="nav-list"><a href="/about" className="nav-link">About</a></li>
                     <li className="nav-list"><a href="/menu" className="nav-link">Menu</a></li>
                     <li className="nav-list"><a href="/reservation" className="nav-link">Reservation</a></li>
-                    <li className="nav-list"><a href="" className="nav-link">Contact</a></li>
+                    <li className="nav-list"><a href="/contact" className="nav-link">Contact</a></li>
                 </ul>
             </div>
         </div>

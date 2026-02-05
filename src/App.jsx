@@ -6,6 +6,7 @@ import MenuPDF from './Menu'
 import Reservation from './Reservation' 
 import Admin from './Admin'
 import AdminLogin from './AdminLogin' 
+import Contact from './Contact';
 import './Style.css'
 
 // --- THE GATEKEEPER ---
@@ -28,6 +29,7 @@ function App() {
       <Route path='/about' element={<About/>} />
       <Route path='/menu' element={<MenuPDF/>} />
       <Route path='/reservation' element={<Reservation/>} />
+      <Route path='/contact' element={<Contact />} />
       
       {/* Login must be outside the protection */}
       <Route path='/admin-login' element={<AdminLogin />} />
